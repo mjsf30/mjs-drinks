@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="sv">
+
+<head>
+  <meta charset="utf-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+
+  <meta
+    name="theme-color"
+    content="#0a0a0d"
+  />
+
+  <title>MJ's Drinks</title>
+
+  <meta
+    name="description"
+    content="Upptäck kvällens drinkar och hitta din favorit."
+  />
+
+  <!-- Fonts -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS -->
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  />
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       BAKGRUNDSLJUS
+       ===================================================== -->
+
+<!-- Animerad rök i bakgrunden -->
+
+<div class="smoke-background" aria-hidden="true">
+
+  <video
+    class="smoke-video smoke-video-1"
+    muted
+    playsinline
+    preload="auto"
+  >
+    <source src="assets/smoke.mp4" type="video/mp4">
+  </video>
+
+  <video
+    class="smoke-video smoke-video-2"
+    muted
+    playsinline
+    preload="auto"
+  >
+    <source src="assets/smoke.mp4" type="video/mp4">
+  </video>
+
+</div>
+
+  <div
+    class="ambient ambient-one"
+    aria-hidden="true"
+  ></div>
+
+  <div
+    class="ambient ambient-two"
+    aria-hidden="true"
+  ></div>
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="hero">
+
+    <div class="hero__content">
+
+      <p class="eyebrow">
+        COCKTAIL MENU
+      </p>
+
+      <h1>
+        Welcome to<br>
+        MJ's drinks
+      </h1>
+
+      <p class="hero__lead">
+        Fresh, sweet, sour, creamy or bubbly?
+        <br>
+        Browse the menu for the drink that suits you.
+      </p>
+
+
+      <!-- MJ's logga -->
+
+      <img
+  src="assets/mjs-logo.png"
+  class="hero__logo"
+  alt="MJ's Drinks"
+  />
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       HUVUDINNEHÅLL
+       ===================================================== -->
+
+  <main>
+
+
+    <!-- ===================================================
+         SÖK + FILTER
+         =================================================== -->
+
+    <section
+      class="controls"
+      aria-label="Sök och filter"
+    >
+
+
+      <!-- Sökfält -->
+
+      <div class="search-wrap">
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+
+          <path
+            d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+          />
+
+        </svg>
+
+
+        <input
+          id="search"
+          type="search"
+          placeholder="Sök drink, smak eller ingrediens…"
+          autocomplete="off"
+        />
+
+      </div>
+
+
+      <!-- Filter -->
+
+      <div
+        class="chips"
+        id="chips"
+      >
+
+        <button
+          class="chip active"
+          data-filter="all"
+          type="button"
+        >
+          Alla
+        </button>
+
+
+        <button
+          class="chip"
+          data-filter="gin"
+          type="button"
+        >
+          Gin
+        </button>
+
+
+        <button
+          class="chip"
+          data-filter="vodka"
+          type="button"
+        >
+          Vodka
+        </button>
+
+
+        <button
+          class="chip"
+          data-filter="aperol"
+          type="button"
+        >
+          Aperol
+        </button>
+
+
+        <button
+          class="chip"
+          data-filter="0%"
+          type="button"
+        >
+          0%
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         DRINKARNA SKAPAS HÄR AV JAVASCRIPT
+         =================================================== -->
+
+    <section
+      class="menu"
+      id="menu"
+      aria-live="polite"
+    ></section>
+
+  </main>
+
+
+  <!-- =====================================================
+       MALL FÖR VARJE DRINK
+       ===================================================== -->
+
+  <template id="drink-card-template">
+
+
+    <article class="drink-card reveal">
+
+
+      <!-- =================================================
+           BILDEN
+
+           Den här ligger bakom ALLT innehåll i kortet.
+           ================================================= -->
+
+      <div class="drink-image-wrap">
+
+
+        <!-- Själva drinkbilden -->
+
+        <img
+          class="drink-image"
+          alt=""
+        />
+
+
+        <!-- Visas endast om ingen bild hittas -->
+
+        <div class="image-placeholder">
+
+          <div
+            class="placeholder-orbit orbit-a"
+          ></div>
+
+          <div
+            class="placeholder-orbit orbit-b"
+          ></div>
+
+
+          <div class="glass-mini">
+
+            <div
+              class="glass-mini__liquid"
+            ></div>
+
+          </div>
+
+
+          <span>
+            Drinkbild kommer här
+          </span>
+
+        </div>
+
+
+        <!-- Mörk transparent gradient över bilden -->
+
+        <div
+          class="photo-shade"
+          aria-hidden="true"
+        ></div>
+
+
+        <!-- Drinktyp, t.ex. SOUR -->
+
+        <div class="badge"></div>
+
+      </div>
+
+
+      <!-- =================================================
+           KLICKYTA / DRINKINFO
+           ================================================= -->
+
+      <button
+        class="card-button"
+        type="button"
+        aria-expanded="false"
+      >
+
+
+        <!-- =================================================
+             NAMN + BESKRIVNING
+             ================================================= -->
+
+        <div class="drink-summary">
+
+          <div class="summary-copy">
+
+
+            <!-- Exempel: gin · sour -->
+
+            <p class="drink-type"></p>
+
+
+            <!-- Drinknamn -->
+
+            <h2 class="drink-name"></h2>
+
+
+            <!-- Beskrivning -->
+
+            <p class="drink-description"></p>
+
+
+            <!-- Smak-taggar -->
+
+            <div class="taste-tags"></div>
+
+          </div>
+
+
+          <!-- Pil -->
+
+          <div
+            class="chevron"
+            aria-hidden="true"
+          >
+            ⌄
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SE INGREDIENSER
+             ================================================= -->
+
+        <div class="open-hint">
+
+          <span class="open-hint-text">
+            Se ingredienser
+          </span>
+
+          <span
+            class="open-hint-arrow"
+            aria-hidden="true"
+          >
+            →
+          </span>
+
+        </div>
+
+      </button>
+
+
+      <!-- =================================================
+           INGREDIENSER
+
+           Det gamla animerade glaset är helt borttaget.
+
+           När kortet öppnas:
+           - bilden blir suddig
+           - bakgrunden mörknar
+           - denna panel glider fram
+           ================================================= -->
+
+      <div class="drink-details">
+
+        <div class="details-inner">
+
+
+          <div class="recipe">
+
+
+            <div class="recipe-title-row">
+
+              <h3>
+                Ingredienser
+              </h3>
+
+            </div>
+
+
+            <!-- Fylls automatiskt från script.js -->
+
+            <ul class="ingredient-list"></ul>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </article>
+
+  </template>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+
+  <footer>
+
+    <p>
+      Scan • Choose • Enjoy
+      <br>
+      Powered by MJ
+    </p>
+
+  </footer>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
+  <script src="script.js"></script>
+
+
+</body>
+
+</html>
