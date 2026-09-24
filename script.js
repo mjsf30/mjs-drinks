@@ -217,11 +217,20 @@ function loadImageWithFallback(img, placeholder, drinkName) {
 
   let currentIndex = 0;
 
+  // Dölj placeholdern medan vi försöker ladda bilden
+  if (placeholder) {
+    placeholder.style.display = 'none';
+  }
+
+  // Bilden börjar osynlig
+  img.style.opacity = '0';
+
   function tryNextImage() {
 
     if (currentIndex >= extensions.length) {
       img.style.display = 'none';
 
+      // Visa placeholder endast om ingen bild alls hittades
       if (placeholder) {
         placeholder.style.display = 'flex';
       }
@@ -233,27 +242,27 @@ function loadImageWithFallback(img, placeholder, drinkName) {
     currentIndex++;
   }
 
-
   img.onload = function () {
 
     img.style.display = 'block';
     img.classList.add('has-image');
 
+    // Mjuk fade-in
+    requestAnimationFrame(() => {
+      img.style.opacity = '1';
+    });
+
     if (placeholder) {
       placeholder.style.display = 'none';
     }
-
   };
-
 
   img.onerror = function () {
     tryNextImage();
   };
 
-
   tryNextImage();
 }
-
 
 /* =========================================================
    BYGG DRINKKORTEN

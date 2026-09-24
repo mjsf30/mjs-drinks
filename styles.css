@@ -1540,3 +1540,7 @@ footer {
       auto !important;
   }
 }
+
+.drink-image {
+  transition: opacity .35s ease;
+}
